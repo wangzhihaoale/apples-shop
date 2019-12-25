@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.wzh.mapper.AuthMapper">
+    <select id="getroles" resultType="AuthPojo">
+        select  * from  shop_auth
+    </select>
+
+    <insert id="addRoleAuth">
+        insert  into shop_role_auth (rid,auid) values
+        <foreach collection="auids" separator="," item="auid">
+            (#{rid},#{auid})
+        </foreach>
+    </insert>
+
+    <select id="getAuthsByRid" resultType="authPOjo">
+      SELECT auid FROM  shop_role_auth  WHERE rid=#{rid}
+    </select>
+
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.wzh.mapper.RoleMapper">
+    <select id="getRoles" resultType="rolePojo">
+        select  * from shop_role
+    </select>
+
+    <insert id="bindRoles">
+        insert  into  shop_admin_role (rid,aid)values
+        <foreach collection="rids" separator="," item="rid">
+            (#{rid},#{aid})
+        </foreach>
+    </insert>
+<!--添加角色-->
+    <insert id="addRole" useGeneratedKeys="true" keyProperty="rid">
+        insert  into  shop_role   (rname,rdesc) values (#{rname},#{rdesc})
+    </insert>
+    <resultMap id="roleMapper" type="rolePojo">
+        <id property="rid" column="rid"/>
+        <result property="rname" column="rname"/>
+        <result property="rdesc" column="rdesc"/>
+        <collection property="authPojos" ofType="authPojo">
+            <id column="auid" property="auid"/>
+            <result property="auname" column="auname"/>
+            <result column="aupath" property="aupath"/>
+            <result property="autype" column="autype"/>
+            <result column="aupid" property="aupid"/>
+        </collection>
+    </resultMap>
+    <select id="getRoleByRid" resultMap="roleMapper">
+        select r.`rid`,rname,rdesc,a.`auid`,auname,aupath,autype,aupid from shop_role r
+            left join shop_role_auth s on r.`rid`=s.`rid`
+            left join shop_auth a on s.`auid`=a.`auid`
+            where r.`rid`=#{rid}
+    </select>
+</mapper>

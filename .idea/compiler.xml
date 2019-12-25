@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="apples-commons" />
+        <module name="apples-manager" />
+        <module name="apples-mappers" />
+        <module name="apples-models" />
+        <module name="apples-sale" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

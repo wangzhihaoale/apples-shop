@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.sale.mapper.SaleMapper">
+    <select id="getGoodsType" resultType="goodsType">
+        select  tid,tname,timage,tdesc  from  shop_goods_type  limit 3
+    </select>
+
+    <select id="login" resultType="Customer">
+        select  aname,apass,aid from shop_customer where aname=#{aname} and  apass=#{apass}
+    </select>
+</mapper>

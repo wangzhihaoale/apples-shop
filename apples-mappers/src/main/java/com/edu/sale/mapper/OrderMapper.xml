@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.sale.mapper.OrderMapper">
+    <insert id="createOrder">
+        insert  into shop_order (oid,aid,addressId,odate,ototal) values
+        (#{oid},#{aid},#{addressId},now(),#{ototal})
+    </insert>
+
+    <update id="updateOrder">
+        update  shop_order  set  ostatus=4  where oid=#{oid}
+    </update>
+
+    <update id="updateOrderPay">
+        update  shop_order  set  ostatus=2  where oid=#{oid}
+    </update>
+
+    <resultMap id="OrderMapper" type="Order">
+        <id property="oid" column="oid"/>
+        <result column="aid" property="aid"/>
+        <result column="ostatus" property="ostatus"/>
+        <result column="odate" property="odate"/>
+        <result column="ototal" property="ototal"/>
+        <collection property="orderInfos" ofType="OrderInfo">
+            <id property="odid" column="odid"/>
+            <result column="gid" property="gid"/>
+            <result column="odprice" property="odprice"/>
+            <result column="odnumber" property="odnumber"/>
+            <association property="goods" javaType="Goods">
+                <result property="gname" column="gname"/>
+                <result column="gimage" property="gimage"/>
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="getOrders" resultMap="OrderMapper">
+        select s.`oid`,s.`aid`,ostatus,odate,ototal,odid,g.`gid`,odprice,odnumber,gname,gimage
+        from  shop_order s
+        left join  shop_order_detail d on s.`oid`=d.`oid`
+        left join shop_goods g on d.`gid`=g.`gid`
+        where aid=#{aid}
+    </select>
+
+    <select id="getOrder" resultMap="OrderMapper">
+        select s.`oid`,s.`aid`,ostatus,odate,ototal,odid,g.`gid`,odprice,odnumber,gname,gimage
+        from  shop_order s
+        left join  shop_order_detail d on s.`oid`=d.`oid`
+        left join shop_goods g on d.`gid`=g.`gid`
+        where s.oid=#{oid}
+    </select>
+</mapper>

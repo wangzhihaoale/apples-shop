@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <mvc:default-servlet-handler/>
+    <context:component-scan base-package="com.edu.wzh.web"/>
+ <!--
+    将数据类型转换服务bean 注入给mvc 注解驱动 ，使用类型转换
+   <mvc:annotation-driven conversion-service="conversionServiceFactoryBean"/>
+   -->
+    <mvc:annotation-driven/>
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--設置上传文件大小-->
+        <property name="maxUploadSize" value="3145728"/>
+        <!--设置编码格式-->
+        <property name="defaultEncoding" value="utf-8"/>
+    </bean>
+
+  <!--  &lt;!&ndash;数据类型转换&ndash;&gt;
+    <bean class="com.edu.utils.StringToDateConverter" id="converter"/>
+
+    <bean class="org.springframework.context.support.ConversionServiceFactoryBean" id="conversionServiceFactoryBean">
+        <property name="converters">
+            <ref bean="converter"/>
+        </property>
+    </bean>-->
+
+</beans>

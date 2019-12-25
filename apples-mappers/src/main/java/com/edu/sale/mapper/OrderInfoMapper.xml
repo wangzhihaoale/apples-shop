@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.sale.mapper.OrderInfoMapper">
+    <insert id="crateOrderInfo">
+        insert  into  shop_order_detail (odid,oid,gid,odprice,odnumber)
+        values
+        <foreach collection="list" separator="," item="info">
+            (#{info.odid},#{info.oid},#{info.gid},#{info.odprice},#{info.odnumber})
+        </foreach>
+    </insert>
+
+</mapper>

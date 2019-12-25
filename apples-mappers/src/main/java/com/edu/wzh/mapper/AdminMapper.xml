@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.wzh.mapper.AdminMapper">
+    <select id="login" resultType="adminPojo">
+        select  * from  shop_admin where  aacount=#{aacount} and  apass=#{apass}
+    </select>
+
+    <select id="conditionsSelectAdmin" resultType="adminPojo">
+        select * from shop_admin where astatus!=2
+
+            <if test="null!=aname and ''!=aname">
+                and  aname like concat("%",#{aname},"%")
+            </if>
+            <if test="null!=astatus and -1!=astatus">
+                and astatus=#{astatus}
+            </if>
+            <if test="null!=aphone and ''!=aphone">
+                and aphone=#{aphone}
+            </if>
+
+
+    </select>
+    <resultMap id="adminMapper" type="adminPojo">
+        <id property="aid" column="aid"/>
+        <result property="aname" column="aname"/>
+        <result property="aacount" column="aacount"/>
+        <result property="apass" column="apass"/>
+        <result property="aphone" column="aphone"/>
+        <result property="astatus" column="astatus"/>
+        <collection property="rolePojo" ofType="RolePojo">
+            <id column="rid" property="rid"/>
+            <result column="rname" property="rname"/>
+            <result column="rdesc" property="rdesc"/>
+            <collection property="authPojos" ofType="AuthPojo">
+                <id column="auid" property="auid"/>
+                <result column="auname" property="auname"/>
+                <result column="aupath" property="aupath"/>
+                <result column="autype" property="autype"/>
+                <result column="aupid" property="aupid"/>
+            </collection>
+        </collection>
+    </resultMap>
+    <select id="selectAuthByAdmin" resultMap="adminMapper">
+            SELECT a.aid,a.aname,a.aacount,a.apass,a.astatus,a.aphone,
+            r.rid,r.rname,r.rdesc,
+            sa.auid,sa.auname,sa.aupath,sa.autype,sa.aupid
+            FROM shop_admin a
+            LEFT JOIN shop_admin_role ar ON a.aid=ar.aid
+            LEFT JOIN shop_role r ON ar.rid=r.rid
+            LEFT JOIN shop_role_auth ra ON r.rid=ra.rid
+            LEFT JOIN shop_auth sa ON ra.auid=sa.auid
+            WHERE aacount=#{aacount} AND apass=#{apass}
+    </select>
+
+    <insert id="insertAdmin" useGeneratedKeys="true" keyProperty="aid">
+        insert  into  shop_admin  (aname,aacount,apass,aphone)values (#{aname},#{aacount},#{apass},#{aphone} )
+    </insert>
+
+    <update id="delectAdmin">
+        update  shop_admin set astatus=2  where aid in
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </update>
+
+    <update id="updateEdit">
+        update  shop_admin set astatus= 1
+            <if test="aphone!=null" >
+               ,aphone=#{aphone}
+            </if>
+            <if test="aname!=null">
+                  ,aname=#{aname}
+            </if>
+            <if test="apass!=null">
+                 ,apass=#{apass}
+            </if>
+        where aid=#{aid}
+    </update>
+
+
+</mapper>

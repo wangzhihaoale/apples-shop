@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.sale.mapper.GoodsMapper">
+
+    <resultMap id="goodsMapper" type="Goods">
+        <id property="gid" column="gid"/>
+        <result property="gname" column="gname"/>
+        <result column="gimage" property="gimage"/>
+        <result property="gprice" column="gprice"/>
+        <result column="gdesc" property="gdesc"/>
+        <result property="gdiscount" column="gdiscount"/>
+        <result column="isdelete" property="isdelete"/>
+        <result property="glabel" column="glabel"/>
+        <result column="gsex" property="gsex"/>
+        <association property="types" javaType="GoodsType">
+            <id column="tid" property="tid"/>
+            <result property="tname" column="tname"/>
+            <result column="timage" property="timage"/>
+        </association>
+    </resultMap>
+    <select id="getGoods" resultMap="goodsMapper">
+        select  gid,gname,gimage,gprice,gtype,gdesc,gdiscount,isdelete,glabel,gsex,tid,tname
+        from shop_goods g left  join   shop_goods_type t on g.gtype=t.tid
+        where  isdelete=0
+        <if test="gsex!=null and gsex!=-1">
+            and gsex=#{gsex}
+        </if>
+        <if test="gname!=null and ''!=gname ">
+            and gname like  concat("%",#{gname},"%")
+        </if>
+        <if test="glabel!=null and glabel!=0">
+            and glabel=#{glabel}
+        </if>
+        /*  gt  大于号 */
+        <if test="null != gpricemin and -1 != gpricemin">
+            AND gprice &gt;= #{gpricemin}
+        </if>
+        /*  lt  小于号 */
+        <if test="null != gpricemax and -1 != gpricemax">
+            AND gprice &lt;= #{gpricemax}
+        </if>
+    </select>
+
+    <select id="selectGoodByGid" resultMap="goodsMapper">
+        select  gid,gname,gimage,gprice,gtype,gdesc,gdiscount,isdelete,glabel,gsex,tid,tname
+        from shop_goods g left  join   shop_goods_type t on g.gtype=t.tid
+        where  isdelete=0 and gid=#{gid}
+    </select>
+</mapper>

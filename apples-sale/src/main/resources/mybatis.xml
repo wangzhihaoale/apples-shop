@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration> <!-- 主配置项 -->
+    <!-- 给实体类定义别名 -->
+
+
+    <typeAliases>
+        <!-- 
+		<typeAlias type="com.edu.bean.User" alias="User"/>
+		 -->
+        <!-- 默认将com.edu.bean下面的类的简单类名作为别名 -->
+        <package name="com.edu.wzh.entity"/>
+    </typeAliases>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
+    <!-- 引入映射文件 -->
+    <mappers>
+        <!-- 映射文件所在的位置 -->
+        <package name="com.edu.sale.mapper"/>
+    </mappers>
+</configuration>
